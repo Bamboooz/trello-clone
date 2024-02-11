@@ -7,12 +7,10 @@ type NodeList = { [idx: number]: { name: string, nodeItems: { [idx: number]: str
 
 const App: React.FC = () => {
 	const [nodeList, setNodeList] = useState<NodeList>({
-		0: { name: "To-do", nodeItems: {0: "Implement stream rendering"} },
+		0: { name: "To-do", nodeItems: { 0: "0", 1: "1", 2: "2", 3: "3", 4: "4" } },
 		1: { name: "Currently doing", nodeItems: {} },
 		2: { name: "Done", nodeItems: {} },
 	});
-
-	console.log(nodeList)
 
 	return (
 		<div className="App p-10 flex justify-start items-start gap-x-4">
