@@ -11,8 +11,8 @@ interface NewNodeProps {
 const NewNode: React.FC<NewNodeProps> = ({ setNodeList }) => {
     const addNewNode = () => {
         setNodeList((prevNodeList) => {
-            const max = Math.max(...Object.keys(prevNodeList).map(Number));
-            return { ...prevNodeList, [max + 1]: { name: "BOMBAKLAT", nodeItems: {} } };
+            const max = Object.keys(prevNodeList).length;
+            return { ...prevNodeList, [max]: { name: "BOMBAKLAT", nodeItems: {} } };
         });
     };
 

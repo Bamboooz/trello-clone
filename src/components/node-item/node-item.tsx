@@ -29,13 +29,15 @@ const NodeItem: React.FC<NodeItemProps> = ({ nodeId, nodeItemId, nodeList, setNo
     };
 
     const handleNodeTextChange = () => {
-        setOpenModal(false);
+        if (modalTextareaValue.replaceAll(" ", "") !== "") {
+            setOpenModal(false);
 
-        setNodeList((prevNodeList) => {
-            const nds = prevNodeList;
-            nds[nodeId].nodeItems[nodeItemId] = modalTextareaValue;
-            return nds
-        });
+            setNodeList((prevNodeList) => {
+                const nds = prevNodeList;
+                nds[nodeId].nodeItems[nodeItemId] = modalTextareaValue;
+                return nds
+            });
+        }
     };
 
     return (

@@ -21,11 +21,17 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
 
     const addNodeItem = () => {
         setNodeList((prevNodeList) => {
-            const nds = prevNodeList;
-            const max = Math.max(...Object.keys(nds[nodeId].nodeItems).map(Number));
-            nds[nodeId].nodeItems[max + 1] = "BOMBAKLAT";
-            
-            return nds;
+            const max = Object.keys(prevNodeList).length;
+            return {
+                ...prevNodeList,
+                [nodeId]: {
+                    name: prevNodeList[nodeId].name,
+                    nodeItems: {
+                        ...prevNodeList[nodeId].nodeItems,
+                        [max]: "BOMBAKLAT"
+                    }
+                }
+            };
         });
     };
 
