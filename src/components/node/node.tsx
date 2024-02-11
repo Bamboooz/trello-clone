@@ -144,7 +144,7 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
 	return (
 		<>
             <div className="flex flex-col justify-center items-center shrink-0">
-                <div className={cn(nodeItemClassName, "rounded-t-sm pl-4 pr-2 justify-between border-t-[1px] text-wrap")}>
+                <div className={cn(nodeItemClassName, "rounded-t-sm pl-4 pr-2 justify-between border-t-[1px] break-all")}>
 			    	<p className="text-slate-200 text-[14px] font-semibold select-none mr-2 my-2">{name}</p>
                     <Dropdown trigger={
                         <button aria-label="More button" className="rounded-lg h-[38px] w-[38px] my-2 flex items-center justify-center hover:bg-slate-700 hover:active:bg-slate-600">
@@ -204,7 +204,7 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
 			    </div>
 
                 {Object.keys(nodeItems).length !== 0 ?
-                    <div ref={nodeScrollRef} className="px-4 py-2 overflow-x-hidden overflow-y-auto max-h-[60vh] w-full bg-slate-800 border-solid border-x-[1px] border-slate-700">
+                    <div ref={nodeScrollRef} className="flex flex-col items-center justify-start py-2 overflow-x-hidden overflow-y-auto max-h-[60vh] w-full bg-slate-800 border-solid border-x-[1px] border-slate-700">
                         {Object.keys(nodeItems).map((index) => {
                             const idx = Number(index);
                             return <NodeItem key={idx} nodeId={nodeId} nodeItemId={idx} nodeList={nodeList} setNodeList={setNodeList} />
