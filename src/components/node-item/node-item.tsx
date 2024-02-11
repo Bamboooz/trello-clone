@@ -113,7 +113,7 @@ const NodeItem: React.FC<NodeItemProps> = ({ nodeId, nodeItemId, nodeList, setNo
 
     return (
         <>
-            <div onContextMenu={handleContextMenu} className="group flex items-center justify-between w-full h-[45px] my-2 pl-4 pr-2 bg-slate-800 rounded-sm border-solid border-[1px] border-x-[1px] border-slate-700 hover:border-slate-400">
+            <div onContextMenu={handleContextMenu} className="group flex items-center text-wrap justify-between w-full min-h-[45px] my-2 pl-4 pr-2 bg-slate-800 rounded-sm border-solid border-[1px] border-x-[1px] border-slate-700 hover:border-slate-400">
                 {contextMenu.show && <ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={closeContextMenu} content={[
                     <p className="text-[16px] text-slate-200 font-semibold mb-4">Card Actions</p>,
                     <button onClick={() => setEditModalOpened(true)} className="w-[300px] h-[40px] bg-slate-700 hover:bg-slate-600 flex items-center justify-between pl-4 pr-2">

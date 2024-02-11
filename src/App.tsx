@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { Node } from './components/node/node';
 import { NewNode } from './components/new-node/new-node';
@@ -11,15 +11,23 @@ const App: React.FC = () => {
 		1: { name: "Currently doing", nodeItems: {} },
 		2: { name: "Done", nodeItems: {} },
 	});
+	const windowScrollRef = useRef<HTMLDivElement>(null);
+
+	const scrollToRight = () => {
+        if (windowScrollRef.current) {
+            const scrollWidth = windowScrollRef.current.scrollWidth;
+            windowScrollRef.current.scrollLeft = scrollWidth ?? 0;
+        }
+    };
 
 	return (
-		<div className="App p-10 flex justify-start items-start gap-x-4">
+		<div ref={windowScrollRef} className="App p-10 flex justify-start items-start gap-x-4">
 			{Object.keys(nodeList).map((index) => {
 				const idx = Number(index);
 				return <Node key={idx} nodeId={idx} nodeList={nodeList} setNodeList={setNodeList} />;
 			})}
 
-			<NewNode setNodeList={setNodeList} />
+			<NewNode setNodeList={setNodeList} scrollToRight={scrollToRight} />
 		</div>
 	);
 };

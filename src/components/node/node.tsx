@@ -23,9 +23,11 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
     const [moveModalInputValue, setMoveModalInputValue] = useState<number>(nodeId);
     const [editModalOpened, setEditModalOpened] = useState(false);
     const [editModalInputValue, setEditModalInputValue] = useState<string>(nodeList[nodeId].name);
+    const [nameModalOpened, setNameModalOpened] = useState(false);
+    const [nameModalInputValue, setNameModalInputValue] = useState<string>("");
     const nodeScrollRef = useRef<HTMLDivElement>(null);
 
-    const nodeItemClassName = "flex items-center w-[300px] h-[60px] bg-slate-800 border-solid border-x-[1px] border-slate-700";
+    const nodeItemClassName = "flex items-center w-[300px] bg-slate-800 border-solid border-x-[1px] border-slate-700";
 
     const nodeItems = nodeList[nodeId].nodeItems;
     const name = nodeList[nodeId].name;
@@ -48,21 +50,27 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
     };
 
     const addNodeItem = () => {
-        setNodeList((prevNodeList) => {
-            const max = Object.keys(nodeItems).length;
-            return {
-                ...prevNodeList,
-                [nodeId]: {
-                    name: name,
-                    nodeItems: {
-                        ...nodeItems,
-                        [max]: "BOMBAKLAT"
-                    }
-                }
-            };
-        });
+        if (nameModalInputValue.replaceAll(" ", "") !== "") {
+            setNameModalOpened(false);
 
-        scrollToBottom();
+            setNodeList((prevNodeList) => {
+                const max = Object.keys(nodeItems).length;
+                return {
+                    ...prevNodeList,
+                    [nodeId]: {
+                        name: name,
+                        nodeItems: {
+                            ...nodeItems,
+                            [max]: nameModalInputValue,
+                        }
+                    }
+                };
+            });
+
+            setNameModalInputValue(""); // revert to default for next new card
+    
+            scrollToBottom();
+        }
     };
 
     const removeNode = () => {
@@ -124,13 +132,22 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
         setEditModalInputValue(event.target.value);
     };
 
+    const handleNameModalClose = () => {
+        setNameModalOpened(false);
+        setNameModalInputValue("");
+    };
+
+    const handleNameModalInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setNameModalInputValue(event.target.value);
+    };
+
 	return (
 		<>
-            <div className="flex flex-col justify-center items-center">
-                <div className={cn(nodeItemClassName, "rounded-t-sm pl-4 pr-2 justify-between border-t-[1px]")}>
-			    	<p className="text-slate-200 text-[14px] font-semibold select-none">{name}</p>
+            <div className="flex flex-col justify-center items-center shrink-0">
+                <div className={cn(nodeItemClassName, "rounded-t-sm pl-4 pr-2 justify-between border-t-[1px] text-wrap")}>
+			    	<p className="text-slate-200 text-[14px] font-semibold select-none mr-2 my-2">{name}</p>
                     <Dropdown trigger={
-                        <button aria-label="More button" className="rounded-lg h-[38px] w-[38px] flex items-center justify-center hover:bg-slate-700 hover:active:bg-slate-600">
+                        <button aria-label="More button" className="rounded-lg h-[38px] w-[38px] my-2 flex items-center justify-center hover:bg-slate-700 hover:active:bg-slate-600">
 			    	        <IoIosMore className="text-slate-200" size={20} />
                         </button>
                     } content={[
@@ -138,7 +155,7 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
                             <p className="text-slate-200 text-[14px]">Edit List</p>
                             <TbPencil className="text-slate-200" size={20} />
                         </button>,
-                        <button aria-label="new node item button" onClick={addNodeItem} className="w-[300px] h-[40px] bg-slate-700 hover:bg-slate-600 flex items-center justify-between pl-4 pr-2">
+                        <button aria-label="new node item button" onClick={() => setNameModalOpened(true)} className="w-[300px] h-[40px] bg-slate-700 hover:bg-slate-600 flex items-center justify-between pl-4 pr-2">
                             <p className="text-slate-200 text-[14px]">Add Card</p>
                             <IoAddOutline className="text-slate-200" size={20} />
                         </button>,
@@ -195,12 +212,26 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
                     </div>
                 : null}
                 
-                <div className={cn(nodeItemClassName, "rounded-b-sm justify-start p-3 border-y-[1px]")}>
-                    <button aria-label="Add card button" onClick={addNodeItem} className="rounded-lg h-full w-full flex items-center justify-start hover:bg-slate-700 hover:active:bg-slate-600">
+                <div className={cn(nodeItemClassName, "h-[60px] rounded-b-sm justify-start p-3 border-y-[1px]")}>
+                    <button aria-label="Add card button" onClick={() => setNameModalOpened(true)} className="rounded-lg h-full w-full flex items-center justify-start hover:bg-slate-700 hover:active:bg-slate-600">
 			    	    <IoIosAdd className="text-slate-200 pl-1" size={28} />
                         <p className="text-slate-200 text-[14px] font-semibold select-none ml-2">Add card</p>
                     </button>
                 </div>
+                <Modal dismissible theme={customModalTheme} show={nameModalOpened} onClose={handleNameModalClose}>
+      		        <Modal.Header className="bg-slate-800 border-slate-700">
+			        	<p className="text-slate-200">Add card</p>
+			        </Modal.Header>
+      		        <Modal.Body className="bg-slate-800">
+                        <textarea value={nameModalInputValue} onChange={handleNameModalInputChange} spellCheck={false} className="p-4 w-full h-[200px] bg-transparent text-slate-200 rounded-sm border-solid border-[1px] border-slate-700 !outline-none resize-none focus:border-cyan-700" />
+      		        </Modal.Body>
+      		        <Modal.Footer className="bg-slate-800 border-slate-700">
+      		          	<Button onClick={addNodeItem} aria-label="submit new value button">Submit</Button>
+      		          	<Button theme={customCloseButtonTheme} onClick={handleNameModalClose} aria-label="cancel new value button">
+			          		Cancel
+      		          	</Button>
+      		        </Modal.Footer>
+      		    </Modal>
             </div>
 		</>
 	);
