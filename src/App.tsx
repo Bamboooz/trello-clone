@@ -52,7 +52,7 @@ const App: React.FC = () => {
 					</div>
 				</header>
 
-				<div className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll">
+				<div className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll"> {/*scroll on drag horizontally here*/}
 					{Object.keys(nodeList).map((index) => {
 						const idx = Number(index);
 						return <Node key={idx} nodeId={idx} nodeList={nodeList} setNodeList={setNodeList} />;
