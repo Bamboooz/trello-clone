@@ -20,7 +20,7 @@ html, body, .App {
     width: 100vw;
     margin: 0;
     background-color: #0f172a;
-    overflow: auto;
+    overflow: hidden;
 }
 
 * {
