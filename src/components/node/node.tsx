@@ -8,6 +8,7 @@ import { IoAddOutline, IoTrashOutline, IoCopyOutline, IoArrowForwardOutline } fr
 
 import { NodeItem } from "../node-item/node-item";
 import { Dropdown } from "../common/dropdown";
+import { NewItem } from "../new-item/new-item";
 import { NodeList } from "../../App";
 import { customModalTheme, customCloseButtonTheme } from "../../themes/flowbite";
 import { cn } from "../../utils/cn";
@@ -23,8 +24,8 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
     const [moveModalInputValue, setMoveModalInputValue] = useState<number>(nodeId);
     const [editModalOpened, setEditModalOpened] = useState(false);
     const [editModalInputValue, setEditModalInputValue] = useState<string>(nodeList[nodeId].name);
-    const [nameModalOpened, setNameModalOpened] = useState(false);
-    const [nameModalInputValue, setNameModalInputValue] = useState<string>("");
+    const [nameEditorOpened, setNameEditorOpened] = useState(false);
+    const [nameEditorInputValue, setNameEditorInputValue] = useState<string>("");
     const nodeScrollRef = useRef<HTMLDivElement>(null);
 
     const nodeItemClassName = "flex items-center w-[300px] bg-slate-800 border-solid border-x-[1px] border-slate-700";
@@ -50,8 +51,8 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
     };
 
     const addNodeItem = () => {
-        if (nameModalInputValue.replaceAll(" ", "") !== "") {
-            setNameModalOpened(false);
+        if (nameEditorInputValue.replaceAll(" ", "") !== "") {
+            setNameEditorOpened(false);
 
             setNodeList((prevNodeList) => {
                 const max = Object.keys(nodeItems).length;
@@ -61,13 +62,13 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
                         name: name,
                         nodeItems: {
                             ...nodeItems,
-                            [max]: nameModalInputValue,
+                            [max]: nameEditorInputValue,
                         }
                     }
                 };
             });
 
-            setNameModalInputValue(""); // revert to default for next new card
+            setNameEditorInputValue(""); // revert to default for next new card
     
             scrollToBottom();
         }
@@ -132,15 +133,6 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
         setEditModalInputValue(event.target.value);
     };
 
-    const handleNameModalClose = () => {
-        setNameModalOpened(false);
-        setNameModalInputValue("");
-    };
-
-    const handleNameModalInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setNameModalInputValue(event.target.value);
-    };
-
 	return (
 		<>
             <div className="flex flex-col justify-center items-center shrink-0">
@@ -155,7 +147,7 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
                             <p className="text-slate-200 text-[14px]">Edit List</p>
                             <TbPencil className="text-slate-200" size={20} />
                         </button>,
-                        <button aria-label="new node item button" onClick={() => setNameModalOpened(true)} className="w-[300px] h-[40px] bg-slate-700 hover:bg-slate-600 flex items-center justify-between pl-4 pr-2">
+                        <button aria-label="new node item button" onClick={() => setNameEditorOpened(true)} className="w-[300px] h-[40px] bg-slate-700 hover:bg-slate-600 flex items-center justify-between pl-4 pr-2">
                             <p className="text-slate-200 text-[14px]">Add Card</p>
                             <IoAddOutline className="text-slate-200" size={20} />
                         </button>,
@@ -211,27 +203,22 @@ const Node: React.FC<NodeProps> = ({ nodeId, nodeList, setNodeList }) => {
                         })}
                     </div>
                 : null}
-                
-                <div className={cn(nodeItemClassName, "h-[60px] rounded-b-sm justify-start p-3 border-y-[1px]")}>
-                    <button aria-label="Add card button" onClick={() => setNameModalOpened(true)} className="rounded-lg h-full w-full flex items-center justify-start hover:bg-slate-700 hover:active:bg-slate-600">
-			    	    <IoIosAdd className="text-slate-200 pl-1" size={28} />
-                        <p className="text-slate-200 text-[14px] font-semibold select-none ml-2">Add card</p>
-                    </button>
+
+                <div className={cn(nodeItemClassName, "rounded-b-sm justify-start px-2 py-2 border-y-[1px]")}>
+                    {!nameEditorOpened ?
+                        <button aria-label="Add card button" onClick={() => setNameEditorOpened(true)} className="rounded-sm h-[45px] w-[280px] flex items-center justify-start hover:bg-slate-700 hover:active:bg-slate-600">
+			    	        <IoIosAdd className="text-slate-200 pl-1" size={28} />
+                            <p className="text-slate-200 text-[14px] font-semibold select-none ml-2">Add card</p>
+                        </button>
+                    :
+                        <NewItem
+                            placeholder="Enter title for this card..."
+                            setNameEditorOpened={setNameEditorOpened}
+                            setNameEditorInputValue={setNameEditorInputValue}
+                            submitFunction={addNodeItem}
+                        />
+                    }
                 </div>
-                <Modal dismissible theme={customModalTheme} show={nameModalOpened} onClose={handleNameModalClose}>
-      		        <Modal.Header className="bg-slate-800 border-slate-700">
-			        	<p className="text-slate-200">Add card</p>
-			        </Modal.Header>
-      		        <Modal.Body className="bg-slate-800">
-                        <textarea value={nameModalInputValue} onChange={handleNameModalInputChange} spellCheck={false} className="p-4 w-full h-[200px] bg-transparent text-slate-200 rounded-sm border-solid border-[1px] border-slate-700 !outline-none resize-none focus:border-cyan-700" />
-      		        </Modal.Body>
-      		        <Modal.Footer className="bg-slate-800 border-slate-700">
-      		          	<Button onClick={addNodeItem} aria-label="submit new value button">Submit</Button>
-      		          	<Button theme={customCloseButtonTheme} onClick={handleNameModalClose} aria-label="cancel new value button">
-			          		Cancel
-      		          	</Button>
-      		        </Modal.Footer>
-      		    </Modal>
             </div>
 		</>
 	);
