@@ -2,9 +2,7 @@ import React, { useState, useRef } from 'react';
 
 import { IoIosMore } from "react-icons/io";
 import { TbPencil } from "react-icons/tb";
-import { useScrollContainer } from 'react-indiana-drag-scroll';
-import SimpleBar from 'simplebar-react';
-import 'simplebar-react/dist/simplebar.min.css';
+
 
 import { getStorageItem, setStorageItem } from './state';
 import { cn } from './utils/cn';
@@ -31,7 +29,6 @@ const App: React.FC = () => {
 	};
 
 	const className = theme === "dark" ? "dark" : "";
-	const { ref } = useScrollContainer();
 
 	return (
 		<>
@@ -55,16 +52,14 @@ const App: React.FC = () => {
 					</div>
 				</header>
 
-				<SimpleBar scrollableNodeProps={{ ref }}>
-					<div className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll">
-						{Object.keys(nodeList).map((index) => {
-							const idx = Number(index);
-							return <Node key={idx} nodeId={idx} nodeList={nodeList} setNodeList={setNodeList} />;
-						})}
+				<div className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll">
+					{Object.keys(nodeList).map((index) => {
+						const idx = Number(index);
+						return <Node key={idx} nodeId={idx} nodeList={nodeList} setNodeList={setNodeList} />;
+					})}
 	
-						<NewNode setNodeList={setNodeList} scrollToRight={() => {}} />
-					</div>
-      			</SimpleBar >
+					<NewNode setNodeList={setNodeList} scrollToRight={() => {}} /> {/* implement scroll to right later */}
+				</div>
 			</div>
 		</>
 	);
