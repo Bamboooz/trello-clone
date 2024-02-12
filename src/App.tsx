@@ -56,14 +56,14 @@ const App: React.FC = () => {
 				</header>
 
 				<SimpleBar scrollableNodeProps={{ ref }}>
-				<div className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll">
-					{Object.keys(nodeList).map((index) => {
-						const idx = Number(index);
-						return <Node key={idx} nodeId={idx} nodeList={nodeList} setNodeList={setNodeList} />;
-					})}
-
-					<NewNode setNodeList={setNodeList} scrollToRight={() => {}} />
-				</div>
+					<div className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll">
+						{Object.keys(nodeList).map((index) => {
+							const idx = Number(index);
+							return <Node key={idx} nodeId={idx} nodeList={nodeList} setNodeList={setNodeList} />;
+						})}
+	
+						<NewNode setNodeList={setNodeList} scrollToRight={() => {}} />
+					</div>
       			</SimpleBar >
 			</div>
 		</>
