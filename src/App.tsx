@@ -40,12 +40,13 @@ const App: React.FC = () => {
 
  	  	  	e.preventDefault();
  	  	  	const x = e.pageX - (sliderRef.current.offsetLeft || 0);
- 	  	  	const walk = (x - startX) * 1;
+ 	  	  	const walk = x - startX;
  	  	  	sliderRef.current.scrollLeft = scrollLeft - walk;
  	  	};
 
  	  	const handleMouseUp = () => {
  	  	  	setIsDown(false);
+
  	  	  	if (sliderRef.current) {
  	  	    	sliderRef.current.classList.remove('active');
  	  	  	}
@@ -66,6 +67,7 @@ const App: React.FC = () => {
  	  	setIsDown(true);
  	  	setStartX(e.pageX - (sliderRef.current?.offsetLeft || 0));
  	  	setScrollLeft(sliderRef.current?.scrollLeft || 0);
+
  	  	if (sliderRef.current) {
  	    	sliderRef.current.classList.add('active');
  	  	}
@@ -73,6 +75,7 @@ const App: React.FC = () => {
 
  	const handleMouseLeave = () => {
  	  	setIsDown(false);
+
  	  	if (sliderRef.current) {
  	    	sliderRef.current.classList.remove('active');
  	  	}
@@ -102,7 +105,7 @@ const App: React.FC = () => {
 
 				<div
 	        		ref={sliderRef}
-	        		className="bomboklat flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll"
+	        		className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll"
 	        		onMouseDown={handleMouseDown}
 	        		onMouseLeave={handleMouseLeave}
 	      		> {/*scroll on drag horizontally here*/}
