@@ -108,7 +108,7 @@ const App: React.FC = () => {
 	        		className="flex items-start justify-start w-[100vw] h-full p-10 gap-x-4 overflow-x-scroll"
 	        		onMouseDown={handleMouseDown}
 	        		onMouseLeave={handleMouseLeave}
-	      		> {/*scroll on drag horizontally here*/}
+	      		>
 					{Object.keys(nodeList).map((index) => {
 						const idx = Number(index);
 						return <Node key={idx} nodeId={idx} nodeList={nodeList} setNodeList={setNodeList} />;
